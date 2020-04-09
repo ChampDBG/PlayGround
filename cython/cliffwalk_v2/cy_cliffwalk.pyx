@@ -54,16 +54,20 @@ def qlearn(steps = Steps, gamma = Gamma, alpha = Alpha, epsilon = Epsilon):
     epi_reward = np.sum(record[:,2])
     return action_value, epi_reward
 
-def sarsa(action_value, reward, steps, gamma, alpha, epsilon):
+def sarsa(steps = Steps, gamma = Gamma, alpha = Alpha, epsilon = Epsilon):
     # initialize setting
-    record = []
-    state = 36
-    action = GetAction(action_value, epsilon, state)
+    cdef np.ndarray[np.float64_t, ndim=2] action_value = np.zeros([48, 4])
+    cdef np.ndarray[np.int64_t, ndim=1] reward = np.full(48, -1)
+    cdef np.ndarray[np.int64_t, ndim=2] record = np.zeros([steps, 5], dtype = np.int64)
+    cdef int state = 36
+    cdef np.int64_t action
+    cdef int next_state
+    reward[37:-1] = -100
     for step in range(steps):
         # get next information
         next_state = TransMat(state, action)
         next_action = GetAction(action_value, epsilon, next_state)
-        record.append([state, action, reward[next_state], next_state, next_action])
+        record[step, :] = state, action, reward[next_state], next_state, next_action
         # update action value
         action_value[state, action] = ValueUpdate('sarsa', action_value, record[step], alpha, gamma)
         # update for next state
@@ -72,7 +76,6 @@ def sarsa(action_value, reward, steps, gamma, alpha, epsilon):
         if state > 36:
             break
     # episode reward
-    record = np.array(record)
     epi_reward = np.sum(record[:,2])
     return action_value, epi_reward
 

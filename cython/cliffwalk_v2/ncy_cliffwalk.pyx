@@ -53,8 +53,12 @@ def qlearn(steps = Steps, gamma = Gamma, alpha = Alpha, epsilon = Epsilon):
     epi_reward = np.sum(record[:,2])
     return action_value, epi_reward
 
-def sarsa(action_value, reward, steps, gamma, alpha, epsilon):
+def sarsa(steps = Steps, gamma = Gamma, alpha = Alpha, epsilon = Epsilon):
     # initialize setting
+    action_value = np.zeros([48, 4])
+    reward = np.full(48, -1)
+    reward[37:-1] = -100
+    
     record = []
     state = 36
     action = GetAction(action_value, epsilon, state)
