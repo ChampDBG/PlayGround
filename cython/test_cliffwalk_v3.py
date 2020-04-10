@@ -37,7 +37,7 @@ if __name__ == '__main__':
     cy_data = []
     for i in tqdm.tqdm(range(REPEAT), ncols = 70):
         cy_data.append(timeit.timeit(stmt = 
-            'from cliffwalk_v3 import cy_cliffwalk as cc\n' 
+            'from cliffwalk_v3 import cy_cliffwalk_v3 as cc\n' 
             'run = cc.exec_cliffwalk(1000, "qlearn")\n' 
             'run = cc.exec_cliffwalk(1000, "sarsa")' , number = NUMBER))
     print('the fastest result is %s' % min(cy_data))
